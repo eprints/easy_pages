@@ -6,7 +6,7 @@ Pages can be managed via Manage records -> Page.  This is limited to Admin users
 All created pages are public.  A list of pages can be accessed via /pages.html
 
 Authors:
-Justin Bradley, EPrints Services
-Edward Oakley, EPrints Services
+- Justin Bradley, EPrints Services
+- Edward Oakley, EPrints Services
 
 EPrints 3.4 is supplied by EPrints Services.
