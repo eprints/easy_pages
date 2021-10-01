@@ -1,0 +1,39 @@
+# save history info by way of a post commit trigger
+
+# generic routine for logging dataobj history
+$c->{ "history_update_trigger" } = sub
+{
+  my( %args ) = @_; 
+  my( $session, $obj ) = @args{qw( repository dataobj )};
+
+  my $datasetid = $obj->dataset->base_id;
+  return unless defined $session->config( "history_enable", $datasetid );
+
+  my %opts; # fake it for now
+  my $action = exists $opts{action} ? $opts{action} : "modify";
+  my $details = exists $opts{details} ? $opts{details} : join('|', sort keys %{$obj->{changed}}),
+
+  my $user = exists $opts{user} ? $opts{user} : $session->current_user;
+  $user = $obj if $obj->dataset->base_id eq "user"; # this is the user dataset
+
+  my $userid = defined $user ? $user->id : undef;
+  my $rev_number = $obj->value( "rev_number" ) || 0;
+
+  my $event = $session->dataset( "history" )->create_dataobj(
+  {
+    _parent=>$obj,
+    userid=>$userid,
+    datasetid=>$datasetid,
+    objectid=>$obj->id,
+    revision=>$rev_number,
+    action=>$action,
+    details=>$details,
+  });
+
+  $event->set_dataobj_xml( $obj ); # what is this?
+};
+
+# reegister and enable
+$c->add_dataset_trigger( "page", EPrints::Const::EP_TRIGGER_AFTER_COMMIT, $c->{ "history_update_trigger" } );
+$c->{history_enable}->{page} = 1;
+

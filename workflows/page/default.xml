@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<workflow xmlns="http://eprints.org/ep3/workflow" xmlns:epc="http://eprints.org/ep3/control">
+  <flow>
+    <stage ref="main"/>
+  </flow>
+   
+  <stage name="main">
+    <component type="XHTML">
+      <h3 style="text-align:center">How to use EASY PAGES</h3>
+
+      <p>You may wish to create a new page for many reasons; announcements, documentation, instructions, further details, etc.</p>
+      <p>With the easy pages tool you can easily create a page to provide information.</p>
+      <p><b>1.</b> Provide a title for the page, this will appear at the top of the page as a heading.</p>
+      <p><b>2.</b> Add the page contents and use the document formatting tool to organise the information appropriately.</p>
+      <p><b>3.</b> Lastly, enter a path name. This will be the reposities URL with /path/the-name-you-choose appeneded.</p>
+      <br/>
+      <p>Once you have finished you can click Save and Return, this will provide you with a link to the finished page.</p>
+      <p>Use the link just as you would use a normal URL link. For example, it could be added to the repository home page, added to a workflow field description, sent out in an email etc.</p>
+      <p><b>Pages can be managed via <a href="/cgi/users/home?screen=Listing&amp;dataset=page">'Manage records > Pages'</a>.  This is limited to Admin users only.</b></p>
+      <p><b>All created pages are public.  A list of pages can be accessed via <a href="{$config{https_root}}/pages.html">REPO-URL/pages.html</a></b></p>
+    </component>
+    <component>
+      <field ref="title"/>
+    </component>
+    <component>
+      <field ref="payload"/>
+    </component>
+    <component show_help="always">
+      <field ref="path"/>
+    </component>
+  </stage>
+</workflow>

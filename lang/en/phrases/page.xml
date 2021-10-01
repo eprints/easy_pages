@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no" ?>
+<!DOCTYPE phrases SYSTEM "entities.dtd">
+
+<epp:phrases xmlns="http://www.w3.org/1999/xhtml" xmlns:epp="http://eprints.org/ep3/phrase" xmlns:epc="http://eprints.org/ep3/control">
+
+<!-- Page Dataset -->
+<epp:phrase id="datasetname_page">Page</epp:phrase>
+<epp:phrase id="datasethelp_page">Public HTML pages created through the easy pages tool.</epp:phrase>
+
+<!-- Page Fields -->
+<epp:phrase id="page_fieldname_pageid">ID</epp:phrase>
+<epp:phrase id="page_fieldhelp_pageid">Unique Identifier</epp:phrase>
+<epp:phrase id="page_fieldname_title">Title</epp:phrase>
+<epp:phrase id="page_fieldhelp_title">The title text of the page, this will also be used to create the URL path if a path is not set.</epp:phrase>
+<epp:phrase id="page_fieldname_content">Content</epp:phrase>
+<epp:phrase id="page_fieldhelp_content"></epp:phrase>
+<epp:phrase id="page_fieldname_payload">Content</epp:phrase>
+<epp:phrase id="page_fieldhelp_payload">The main contents of the page.</epp:phrase>
+<epp:phrase id="page_fieldname_path">Path</epp:phrase>
+<epp:phrase id="page_fieldhelp_path">The URL path of the page, eg http://my-repository.com/page/PATH.  This will be created automatically if left blank.</epp:phrase>
+<epp:phrase id="page_fieldname_rev_number">Revision</epp:phrase>
+<epp:phrase id="page_fieldhelp_rev_number"></epp:phrase>
+
+<epp:phrase id="EPrints::Plugin::Screen::Page::History:title">Page History</epp:phrase>
+
+<!-- Page Admin -->
+<epp:phrase id="Plugin/Screen/Admin/PageCreate:action:create_page:title">Create a Page</epp:phrase>
+<epp:phrase id="Plugin/Screen/Admin/PageCreate:action:create_page:description">Create a new HTML Page</epp:phrase>
+<epp:phrase id="Plugin/Screen/Admin/PageCreate:title">Create a Page</epp:phrase>
+<epp:phrase id="Plugin/Screen/Admin/PageCreate:page_created">A new page has been created. Go to <a href="/cgi/users/home?screen=Listing&amp;dataset=page">'Manage records > Pages'</a> to start editing.</epp:phrase>
+
+</epp:phrases>

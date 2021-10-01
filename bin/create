@@ -1,0 +1,26 @@
+#!/usr/bin/perl -w -I/opt/eprints3/perl_lib
+
+use EPrints;
+
+use strict;
+
+my $verbose = 0;
+my $quiet = 0;
+
+my $repoid = shift @ARGV;
+
+my $session = new EPrints::Session(1, $repoid, 1);
+if( !defined $session )
+{
+  print STDERR "Failed to load repository: $repoid\n";
+  exit 1;
+}
+
+my $dataset = $session->dataset( 'page' );
+
+my $list = $dataset->dataobj_class->create_page( $session,
+  {
+    title => "title",
+    payload => "<p><em>Hello</em>, <strong>World</strong>!</p>",
+  }
+);

@@ -1,0 +1,51 @@
+use EPrints;
+
+use strict;
+my $session = new EPrints::Session;
+exit( 0 ) unless( defined $session );
+
+my $search_path = $session->param( "path" );
+# need to sanitise search_path
+exit( 0 ) unless defined $search_path;
+
+my $page = $session->make_doc_fragment();
+my $container = $session->make_element( "div", class=>"ep_pages" );
+$page->appendChild( $container );
+my $ul =  $session->make_element( "ul" );
+$container->appendChild( $ul );
+
+my $ds = $session->dataset( "page" );
+my $searchexp = new EPrints::Search( session=>$session, dataset=>$ds );
+$searchexp->add_field( $ds->get_field( "path" ), $search_path, "EQ" );
+my $results = $searchexp->perform_search;
+
+if( $results->count() > 0 )
+{
+
+
+$results->map( sub {
+  my( $session, $dataset, $page ) = @_;
+
+  my $id = $page->get_id;
+  my $path = $page->get_value( "path" );
+  ($path) = ( $path =~ /(^.{1,100})/ );
+  $path =~ s/[^ a-zA-Z0-9-]+//g;
+  $path =~ s/ /-/g;
+  $path = lc($path);
+
+  my $a =  $session->make_element( "a", href => "/id/page/$id?$path" );
+  $a->appendChild( $session->make_text( $page->get_value( "title" ) . " ($id)" ) );
+  my $li = $session->make_element( "li" );
+  $li->appendChild( $a );
+  $ul->appendChild( $li );
+});
+
+}
+
+my $title = $session->make_text( "Page Search for '$search_path'" );
+my $template = "default";
+$session->build_page( $title, $page, "pages", undef, $template );
+$session->send_page();
+
+$session->terminate;
+

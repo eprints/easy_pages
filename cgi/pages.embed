@@ -1,0 +1,23 @@
+use EPrints;
+
+use strict;
+my $session = new EPrints::Session;
+exit( 0 ) unless( defined $session );
+
+my $ds = $session->dataset( "page" );
+my $ul =  $session->make_element( "ul" );
+
+$ds->map( $session, sub {
+  my( $session, $dataset, $page ) = @_;
+
+  my $path = $page->get_value( "path" );
+  if( $path ) # dont list if there is no path
+  {
+    my $li = $session->make_element( "li" );
+    $li->appendChild( $page->render_value( "path" ) );
+    $ul->appendChild( $li );
+  }
+});
+
+print EPrints::XML::to_string( $ul );
+$session->terminate;

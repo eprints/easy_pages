@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1"  standalone="no"  ?>
+<!DOCTYPE page SYSTEM "entities.dtd" >
+<xpage:page xmlns="http://www.w3.org/1999/xhtml" xmlns:xpage="http://eprints.org/ep3/xpage" xmlns:epc="http://eprints.org/ep3/control">
+<xpage:title>Pages</xpage:title>
+<xpage:body>
+<div id="pages"></div>
+<script type="text/javascript"> new Ajax.Updater( 'pages', '/cgi/pages.embed/' ); </script>
+</xpage:body>
+</xpage:page>
