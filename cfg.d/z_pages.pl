@@ -23,6 +23,7 @@ push @{$c->{user_roles}->{admin}}, qw{
   +page/history
 };
 
+$c->{plugins}{"Screen::Page::View"}{params}{disable} = 0;
 $c->{plugins}{"Screen::Page::Edit"}{params}{disable} = 0;
 $c->{plugins}{"Screen::Page::New"}{params}{disable} = 0;
 $c->{plugins}{"Screen::Admin::PageCreate"}{params}{disable} = 0;
@@ -56,6 +57,15 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
       return EP_TRIGGER_DONE;
     }
   }
+
+  # redirect to our own View screen
+  if( $o{args} =~ m|^\?screen=Workflow%3A%3AView&dataset=page&dataobj=| )
+  {
+    $o{args} =~ s/screen=Workflow/screen=Page/;
+    ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}.$o{args} );
+    return EP_TRIGGER_DONE;  
+  }
+
 });
 
 $c->{set_page_automatic_fields} = sub
