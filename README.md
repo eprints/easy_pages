@@ -6,7 +6,7 @@ Pages can be managed via Manage records -> Page.  This is limited to Admin users
 All created pages are public.  A list of pages can be accessed via /pages.html
 
 In order to recreate the standard pages in easy pages, run the following bin script.\
-`easy_pages/bin/create_standard_pages`\
+`easy_pages/bin/create_standard_pages`
 
 If pages are created with the path set as `information`, `contact` or `policies` then the standard xpage versions of these pages will redirect to the easy page version automatically.
 
