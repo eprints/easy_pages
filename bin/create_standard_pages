@@ -1,0 +1,67 @@
+#!/usr/bin/perl -w -I/opt/eprints3/perl_lib
+
+use EPrints;
+
+use strict;
+
+my $verbose = 0;
+my $quiet = 0;
+
+my $repoid = shift @ARGV;
+
+my $session = new EPrints::Session(1, $repoid, 1);
+if( !defined $session )
+{
+  print STDERR "Failed to load repository: $repoid\n";
+  exit 1;
+}
+
+my %pages = (
+	information => {
+		title => "About the Repository",
+		path => "information",
+		payload => "<p>This site is powered by&nbsp;<a href='../../eprints/'>EPrints 3</a>, free software developed by the University of Southampton.</p>
+<h2 id='contact-information'>Contact Information</h2>
+<p>Any correspondence concerning this specific repository should be sent to&nbsp;<a href='mailto:ejo1f20\@soton.ac.uk'>ejo1f20\@soton.ac.uk</a>.</p>",	
+	},
+	contact => {
+                title => "Contact Information",
+                path => "contact",
+                payload => "<p>Eds 3.5 Test Repo Site Administrator:&nbsp;<a href='mailto:ejo1f20\@soton.ac.uk'>ejo1f20\@soton.ac.uk</a></p>",
+        },
+	policies => {
+                title => "Repository Policies",
+                path => "policies",
+                payload => "<div class='ep_msg_warning'>&nbsp;</div>
+<div class='ep_msg_warning'>
+<div class='ep_msg_warning_content'>
+<div class='ep_msg_warning_icon'><img src='../../style/images/warning.png' alt='Warning' /></div>
+<div class='ep_msg_warning_text'>
+<p>No policies have been defined for this repository.</p>
+<p>You can use the&nbsp;<a href='https://v2.sherpa.ac.uk/opendoar/policytool/' rel='external'>OpenDOAR Policies Tool</a>&nbsp;to produce a standard policy page. Use the button below to define your policies.</p>
+</div>
+</div>
+</div>
+<form action='https://v2.sherpa.ac.uk/opendoar/policytool/' method='post'><input class='ep_form_action_button' type='submit' value='Start defining policies' /></form>
+<p><strong>Policies can be defined and managed by editing the 'Repository Policies' page via&nbsp;<a href='/cgi/users/home?screen=Listing&amp;dataset=page'>'Manage records &gt; Pages'</a>.&nbsp;</strong></p>",
+        },
+);
+
+my $dataset = $session->dataset( 'page' );
+my $all_pages = $dataset->search;
+
+$all_pages->map( sub {
+        my( $repository, $dataset, $page ) = @_;
+
+	delete $pages{information} if( $page->get_value( "path" ) eq "information" );
+        delete $pages{contact} if( $page->get_value( "path" ) eq "contact" );
+        delete $pages{policies} if( $page->get_value( "path" ) eq "policies" );
+});
+
+for my $page ( keys %pages )
+{
+	print STDERR "Adding easy page... ", $pages{$page}->{"path"}, "\n";
+	$dataset->dataobj_class->create_page( $session, $pages{$page} );
+}
+
+print STDERR "Finished creating standard easy pages.\n";

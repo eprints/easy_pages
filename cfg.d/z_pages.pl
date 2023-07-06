@@ -36,7 +36,8 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
 {
   my( %o ) = @_;
 
-  if( $o{uri} =~ m|^$o{urlpath}/page/([^*]+)| )
+  if( $o{uri} =~ m|^$o{urlpath}/page/([^*]+)| || 
+      $o{uri} =~ m|^$o{urlpath}/(information\|policies\|contact).html| )
   {
     my $path = EPrints::DataObj::Page::tidy_path( $1 ); 
     my $session = new EPrints::Session;
