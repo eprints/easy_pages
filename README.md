@@ -10,3 +10,4 @@ Authors:
 - Edward Oakley, EPrints Services
 
 EPrints 3.4 is supplied by EPrints Services.
+The files contained within this directory are all Copyright 2023 University of Southampton.
