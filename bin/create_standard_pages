@@ -22,12 +22,12 @@ my %pages = (
 		path => "information",
 		payload => "<p>This site is powered by&nbsp;<a href='../../eprints/'>EPrints 3</a>, free software developed by the University of Southampton.</p>
 <h2 id='contact-information'>Contact Information</h2>
-<p>Any correspondence concerning this specific repository should be sent to&nbsp;<a href='mailto:ejo1f20\@soton.ac.uk'>ejo1f20\@soton.ac.uk</a>.</p>",	
+<p>Any correspondence concerning this specific repository should be sent to&nbsp;<a href='mailto:'>repository admin email</a>.</p>",	
 	},
 	contact => {
                 title => "Contact Information",
                 path => "contact",
-                payload => "<p>Eds 3.5 Test Repo Site Administrator:&nbsp;<a href='mailto:ejo1f20\@soton.ac.uk'>ejo1f20\@soton.ac.uk</a></p>",
+                payload => "<p>Repository Site Administrator:&nbsp;<a href='mailto:'>repository admin email.</a></p>",
         },
 	policies => {
                 title => "Repository Policies",
