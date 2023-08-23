@@ -3,6 +3,7 @@ package EPrints::DataObj::Page;
 use EPrints;
 use EPrints::DataObj;
 use EPrints::DataObj::RichDataObj;
+use Text::Unidecode;
 
 @ISA = ( 'EPrints::DataObj::RichDataObj' );
 
@@ -64,8 +65,17 @@ sub tidy_path
   my( $path ) = @_;
 
   my ( $tidy ) = ( $path =~ /(^.{1,100})/ );
+
+  # converts non-ASCII characters into their nearest equivalent, e.g. stripping accents
+  $tidy = unidecode( $tidy );
+
   $tidy =~ s/[^ a-zA-Z0-9-]+//g;
   $tidy =~ s/ /-/g;
+
+  # unidecode can leave us with some extra dashes - tidy them up
+  $tidy =~ s/--/-/g;
+  $tidy =~ s/-$//g;
+
   $tidy = lc( $tidy );
 
   return $tidy;
