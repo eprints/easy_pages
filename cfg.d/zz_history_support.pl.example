@@ -34,6 +34,6 @@ $c->{ "history_update_trigger" } = sub
 };
 
 # reegister and enable
-$c->add_dataset_trigger( "page", EPrints::Const::EP_TRIGGER_AFTER_COMMIT, $c->{ "history_update_trigger" } );
+$c->add_dataset_trigger( "page", EPrints::Const::EP_TRIGGER_AFTER_COMMIT, $c->{ "history_update_trigger" }, id => 'update_page_history' );
 $c->{history_enable}->{page} = 1;
 
