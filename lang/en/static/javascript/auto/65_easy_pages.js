@@ -31,7 +31,7 @@ var initTinyMCE_for_easy_pages = function(id,replacements, preview_substitutions
             // Functionality:
             plugins: [
                 'advlist autolink lists link image charmap print anchor',
-                'searchreplace visualblocks code fullscreen', // unique preview variation.
+                'searchreplace visualblocks code fullscreen preview_with_css_branding', // unique preview variation.
                 'insertdatetime media table contextmenu paste code textpattern', // textpattern 4.9.1 not in richtext ingredient
                                                                                  // and so added with/alongside easy_pages implementation
             ],
@@ -66,7 +66,7 @@ var initTinyMCE_for_easy_pages = function(id,replacements, preview_substitutions
 
             // UI:
             menubar: 'edit insert view format table tools',
-            toolbar: 'undo redo | insert | styleselect | bold italic | fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code',
+            toolbar: 'undo redo | insert | styleselect | bold italic | fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code preview_with_css_branding',
             link_list: [
                 {title: 'PUT-ARCHIVE-NAME-HERE', value: 'PUT-ARCHIVE-URL-HERE'},
                 {title: 'PUT-ADMIN-EMAIL-HERE', value: 'PUT-ADMIN-EMAIL-HERE'},
