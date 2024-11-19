@@ -49,7 +49,12 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
     if ( $results->count() == 1 )
     {
       $id = $results->item(0)->get_id;
-      ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/id/page/$id?$path" );
+
+      my $args  = $o{args};
+         $args .= ( $args ) ? "&" : "?";
+         $args .= $path;
+
+      ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/id/page/$id$args" );
       return EP_TRIGGER_DONE;
     }
     elsif( $results->count() > 1 )
