@@ -1,4 +1,4 @@
-#Easy Pages
+# Easy Pages
 
 The 'easy_pages' ingredient is designed to extend EPrints 3.4 by adding a new 'page' dataset.\
 The page dataobjects can be used to create HTML pages, as an alternative to creating XHTML and xpage files directly.\
@@ -12,7 +12,7 @@ In order to recreate the standard pages in easy pages, run the following bin scr
 
 If pages are created with the path set as `information`, `contact` or `policies` then the standard xpage versions of these pages will redirect to the easy page version automatically.
 
-##Page Includes
+## Page Includes
 
 Easy pages can be included in xpage templates using the following ajax call. 
 
@@ -25,7 +25,7 @@ Easy pages can be included in xpage templates using the following ajax call.
 
 - The home script will be added as part of the create_standard_pages script, but will only be included if the call above has been included. Follow this pattern to add page fragments fed by other pages.
 
-##Authors:
+## Authors:
 - Justin Bradley, EPrints Services
 - Edward Oakley, EPrints Services
 
