@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<workflow xmlns="http://eprints.org/ep3/workflow" xmlns:epc="http://eprints.org/ep3/control">
+<workflow xmlns="http://eprints.org/ep3/workflow" xmlns:epp="http://eprints.org/ep3/phrase" xmlns:epc="http://eprints.org/ep3/control">
   <flow>
     <stage ref="main"/>
   </flow>
-   
   <stage name="main">
     <component type="XHTML">
       <h3 style="text-align:center">How to use EASY PAGES</h3>
@@ -12,12 +11,76 @@
       <p>With the easy pages tool you can easily create a page to provide information.</p>
       <p><b>1.</b> Provide a title for the page, this will appear at the top of the page as a heading.</p>
       <p><b>2.</b> Add the page contents and use the document formatting tool to organise the information appropriately.</p>
-      <p><b>3.</b> Lastly, enter a path name. This will be the reposities URL with /path/the-name-you-choose appeneded.</p>
+      <p><b>3.</b> Lastly, enter a path name. This will be the repositories URL with /page/the-name-you-choose appended.</p>
       <br/>
       <p>Once you have finished you can click Save and Return, this will provide you with a link to the finished page.</p>
       <p>Use the link just as you would use a normal URL link. For example, it could be added to the repository home page, added to a workflow field description, sent out in an email etc.</p>
       <p><b>Pages can be managed via <a href="/cgi/users/home?screen=Listing&amp;dataset=page">'Manage records > Pages'</a>.  This is limited to Admin users only.</b></p>
       <p><b>All created pages are public.  A list of pages can be accessed via <a href="{$config{https_root}}/pages.html">REPO-URL/pages.html</a></b></p>
+      <br/>
+      <h3>Dynamic variables available to you:</h3>
+
+      <p>Type placeholders when you want dynamic values shown in their place.</p>
+
+      <p>Use the placeholders anywhere you would like dynamic content to appear.</p>
+      <p>You can preview the dynamic content using View-&gt;Preview on the menubar, or the Preview icon on the toolbar.</p>
+
+      <table>
+          <tr>
+              <td>Placeholder</td>
+              <td>Current value</td>
+              <td>Where Value is Defined:</td>
+          </tr>
+          <tr>
+              <td>PUT-ADMIN-EMAIL-HERE</td>
+              <td><epc:print expr='$config{adminemail}' /></td>
+              <td>Repository Configuration</td>
+          </tr>
+          <tr>
+              <td>PUT-ARCHIVE-NAME-HERE</td>
+              <td><epc:phrase ref="archive_name"/></td>
+              <td>Phrase Editor</td>
+          </tr>
+          <tr>
+              <td>PUT-ARCHIVE-URL-HERE</td>
+              <td><epc:print expr='$config{https_root}' /></td><!-- Not honest - as archive url is actually a value calculated in z_pages.pl 
+                                                                - this is simply close enough until can be improved to have parity.
+                                                                Also potentially displays blank if no https.
+                                                                Could be improved with test conditionals and alternatives-->
+              <td>Repository Configuration</td>
+          </tr>
+          <tr>
+              <td>PUT-CGI-URL-HERE</td>
+              <td><epc:print expr='$config{perl_url}' /></td><!-- Not honest - as cgi url is actually a value calculated in z_pages.pl - this is simply close enough - this is simply close enough until can be improved to have parity.-->
+              <td>Repository Configuration</td>
+          </tr>
+      </table>
+
+      <br/>
+
+      <h3>Instant Substitutions:</h3>
+
+      <p>Type instant substitutions when you want something to appear instantly.</p>
+
+      <p>These are essentially convenient shortcuts.</p>
+
+      <table>
+          <tr>
+              <td>Typing this...</td>
+              <td>Does this...</td>
+          </tr>
+          <tr>
+              <td>INSTANT-ADMIN-EMAIL-LINK</td>
+              <td>Creates an admin email link.</td>
+          </tr>
+          <tr>
+              <td>INSTANT-ARCHIVE-LINK</td>
+              <td>Creates an archive link.</td>
+          </tr>
+      </table>
+
+      <p>Where these also use placeholders, you can preview their dynamic content using View-&gt;Preview on the menubar, or the Preview icon on the toolbar.</p>
+
     </component>
     <component>
       <field ref="title"/>

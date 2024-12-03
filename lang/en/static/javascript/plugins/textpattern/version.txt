@@ -1,0 +1,22 @@
+Downloaded (production version) from: https://download.tiny.cloud/tinymce/community/tinymce_4.9.1.zip
+Documented: https://www.tiny.cloud/docs-4x/plugins/textpattern/
+
+Appears to play nicely with EPrints "richtext" ingredient's TinyMCE 4.6.1,
+and contains the latest improvements and bugfixes the 4.x compatible textpattern plugin received.
+https://www.tiny.cloud/docs-4x/changelog/#version491december042018
+
+Version 4.9.1 December 04, 2018
++ added functionality to insert html to the replacement feature of the Textpattern Plugin.
++ fixed a bug in the Textpattern Plugin where the editor would get an incorrect selection after inserting a text pattern on Safari.
+
+Version 4.9.0 November 27, 2018
++ added a replace feature to the Textpattern Plugin.
+
+Version 4.7.1 October 9, 2017
++ fixed bug where the Textpattern plugin were throwing errors on some patterns.
+
+Version 4.6.0 - May 4, 2017
++ fixed bug where the textpattern plugin wasn't dealing with trailing punctuations correctly.
+
+Version 4.1.0 - June 18, 2014
++ added new textpattern plugin that allows you to use markdown like text patterns to format contents.
