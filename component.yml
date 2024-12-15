@@ -1,0 +1,16 @@
+---
+id: "ingredient:easy_pages"
+name: "Easy Pages Ingredient"
+type: "ingredient"
+version: 2.0
+maintainers: 
+  - name: "David R Newman"
+    email: "drn@ecs.soton.ac.uk"
+description: "This is an ingredient that provides easy design of static pages."
+requires:
+  - component: "core"
+    version: ">= 3.5.1"
+  - component: "ingredient:richtext"
+    version: ">= 2.0"
+usage: "This can be installed by dropping into the ingredients sub-directory and adding to your archive's package.yml."
+readme: "https://github.com/eprints/easy_pages/blob/master/README.md"
