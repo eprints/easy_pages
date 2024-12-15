@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"  standalone="no"  ?>
+<!DOCTYPE page SYSTEM "entities.dtd" >
+<xpage:page xmlns="http://www.w3.org/1999/xhtml" xmlns:xpage="http://eprints.org/ep3/xpage" xmlns:epc="http://eprints.org/ep3/control">
+<xpage:head>
+</xpage:head>
+<xpage:title></xpage:title>
+<xpage:body>
+
+<div style="margin: 0 auto; width: 700px;">
+  <div id="pages_home"></div>
+  <script type="text/javascript">
+    jQuery("#pages_home").load( "/page/home?mainonly=yes" );
+  </script>
+
+  <div id="pages_index"></div>
+  <script type="text/javascript">
+    jQuery("#pages_index").load( "/cgi/pages.embed" );
+  </script>
+</div>
+
+</xpage:body>
+</xpage:page>
