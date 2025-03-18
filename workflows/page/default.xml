@@ -23,6 +23,9 @@
       <field ref="title"/>
     </component>
     <component>
+      <field ref="language"/>
+    </component>
+    <component>
       <field ref="payload"/>
     </component>
     <component show_help="always">

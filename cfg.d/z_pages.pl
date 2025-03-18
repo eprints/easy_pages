@@ -1,4 +1,5 @@
 use EPrints::DataObj::Page;
+use EPrints::Const qw( OK DONE DECLINED );
 
 # set dependencies
 $c->{deps}->{"ingredients/pages"} = [ "ingredients/richtext" ];
@@ -31,12 +32,12 @@ $c->{plugins}{"Screen::Admin::PageCreate"}{params}{disable} = 0;
 # make all pages public
 push @{$c->{public_roles}}, "+page/view";
 
-# Redirect /page/nice-name to /id/page/x?nice-name
+# Redirect (information\|policies\|contact).html to /page/(information\|policies\|contact)
 $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
 {
   my( %o ) = @_;
 
-  if( $o{uri} =~ m|^$o{urlpath}/page/([^*]+)| || 
+  if( #$o{uri} =~ m|^$o{urlpath}/page/([^*]+)| || 
       $o{uri} =~ m|^$o{urlpath}/(information\|policies\|contact).html| )
   {
     my $path = EPrints::DataObj::Page::tidy_path( $1 ); 
@@ -54,7 +55,8 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
          $args .= ( $args ) ? "&" : "?";
          $args .= $path;
 
-      ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/id/page/$id$args" );
+      # ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/id/page/$id$args" );
+      ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/page/$path" );
       return EP_TRIGGER_DONE;
     }
     elsif( $results->count() > 1 )
@@ -72,7 +74,7 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
     return EP_TRIGGER_DONE;  
   }
 
-}, id => 'easy_pages_nice_url_redirect' );
+}, id => 'easy_pages_hardcoded_pages_redirect' );
 
 $c->{set_page_automatic_fields} = sub
 {
@@ -89,4 +91,87 @@ $c->{set_page_automatic_fields} = sub
     $page->set_value( "path", $tidy_path ) if $path ne $tidy_path;
   }
 
+};
+
+
+$c->{custom_handlers}->{easy_pages}->{regex} = '^URLPATH/page/([^*]+)';
+$c->{custom_handlers}->{easy_pages}->{function} = sub
+{
+	my ( $r ) = @_;
+  
+  my $session = new EPrints::Session;
+	exit( 0 ) unless( defined $session );
+  my $current_url = $session->current_url;
+  print STDERR "current_url: $current_url\n";
+  if ($current_url =~ m|/page/([^*]+)|){
+    print STDERR "current_url matched: 1:$1 2:$2\n";
+    my $path = EPrints::DataObj::Page::tidy_path( $1 ); 
+    # my $session = new EPrints::Session;
+    my $ds = $session->dataset( "page" );
+    my $searchexp = new EPrints::Search( session=>$session, dataset=>$ds );
+    $searchexp->add_field( $ds->get_field( "path" ), $path, "EQ" );
+    my $results = $searchexp->perform_search;
+
+    if ( $results->count() >= 1 )
+    {
+      my $repository = $EPrints::HANDLE->current_repository();
+      my $id = $results->item(0)->get_id;
+      my $crud = EPrints::Apache::CRUD->new(
+				repository => $repository,
+				request => $r,
+				datasetid => "page",
+				dataobjid => $id,
+				# fieldid => $fieldid,
+			);
+    
+    
+
+      return $r->status if !defined $crud;
+
+      $r->handler( 'perl-script' );
+
+      $r->set_handlers( PerlMapToStorageHandler => sub { OK } );
+
+      $r->push_handlers(PerlAccessHandler => [
+          sub { $crud->authen },
+          sub { $crud->authz },
+        ] );
+
+      $r->set_handlers( PerlResponseHandler => [
+          sub { $crud->handler },
+        ] );
+
+      return OK;
+    }
+
+
+  }
+
+
+# my $path = EPrints::DataObj::Page::tidy_path( $1 ); 
+#     my $session = new EPrints::Session;
+#     my $ds = $session->dataset( "page" );
+#     my $searchexp = new EPrints::Search( session=>$session, dataset=>$ds );
+#     $searchexp->add_field( $ds->get_field( "path" ), $path, "EQ" );
+#     my $results = $searchexp->perform_search;
+
+#     if ( $results->count() == 1 )
+#     {
+
+
+
+
+	# my $session = new EPrints::Session;
+	# exit( 0 ) unless( defined $session );
+
+	# my $cu = $session->current_url;
+	# $cu =~ s|^/||;
+	# my ( $id ) = split( "/", $cu ); 
+	# return EPrints::Const::NOT_FOUND unless $id;
+
+	# my $ds = $session->dataset( "eprint" );
+	# my $eprint = $ds->dataobj( $id );
+	# return EPrints::Const::NOT_FOUND unless $eprint;
+
+	# return EPrints::Apache::Rewrite::redir( $r, $session->get_conf( "rel_path" ) .  "/" . $eprint->path );
 };
