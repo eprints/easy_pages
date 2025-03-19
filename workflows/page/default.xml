@@ -20,7 +20,7 @@
       <p><b>All created pages are public.  A list of pages can be accessed via <a href="{$config{https_root}}/pages.html">REPO-URL/pages.html</a></b></p>
     </component>
     <component>
-      <field ref="title"/>
+      <field ref="title" input_lookup_url="{$config{rel_cgipath}}/users/lookup/easy_pages_paths"/>
     </component>
     <component>
       <field ref="language"/>
