@@ -32,13 +32,11 @@ $c->{plugins}{"Screen::Admin::PageCreate"}{params}{disable} = 0;
 # make all pages public
 push @{$c->{public_roles}}, "+page/view";
 
-# Redirect hardcoded html links to easy pages equivilants, and backwards compatible CRUD /id/page/$id$args links
+# Redirect hardcoded html links and old CRUD links to easy pages
 $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
 {
   my( %o ) = @_;
-
-  if( $o{uri} =~ m|^$o{urlpath}/id/page/([^*]+)| || 
-      $o{uri} =~ m|^$o{urlpath}/(information\|policies\|contact).html| )
+  if( $o{uri} =~ m|^$o{urlpath}/(information\|policies\|contact).html| )
   {
     my $path = EPrints::DataObj::Page::tidy_path( $1 ); 
     my $session = new EPrints::Session;
@@ -46,22 +44,29 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
     my $searchexp = new EPrints::Search( session=>$session, dataset=>$ds );
     $searchexp->add_field( $ds->get_field( "path" ), $path, "EQ" );
     my $results = $searchexp->perform_search;
-    # TODO abstract out language selection so it can be used for the old redirect here?
-    if ( $results->count() == 1 )
+
+    if ( $results->count() >= 1 )
     {
-      # $id = $results->item(0)->get_id;
+      $id = $results->item(0)->get_id;
 
-      # my $args  = $o{args};
-      #    $args .= ( $args ) ? "&" : "?";
-      #    $args .= $path;
-
-      # ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/id/page/$id$args" );
       ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/page/$path" );
       return EP_TRIGGER_DONE;
     }
-    elsif( $results->count() > 1 )
+  }
+
+  if( $o{uri} =~ m|^$o{urlpath}/id/page/([^*]+)| )
+  {
+    my $id = EPrints::DataObj::Page::tidy_path( $1 ); 
+    my $session = new EPrints::Session;
+    my $ds = $session->dataset( "page" );
+    my $searchexp = new EPrints::Search( session=>$session, dataset=>$ds );
+    $searchexp->add_field( $ds->get_field( "pageid" ), $id, "EQ" );
+    my $results = $searchexp->perform_search;
+
+    if ( $results->count() >= 1 )
     {
-      ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/cgi/pages.search?path=$path" );
+      my $path = $results->item(0)->get_value("path");
+      ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/page/$path" );
       return EP_TRIGGER_DONE;
     }
   }
@@ -74,7 +79,7 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
     return EP_TRIGGER_DONE;  
   }
 
-}, id => 'easy_pages_hardcoded_pages_redirect' );
+}, id => 'easy_pages_url_redirect' );
 
 $c->{set_page_automatic_fields} = sub
 {
@@ -94,6 +99,9 @@ $c->{set_page_automatic_fields} = sub
 };
 
 sub best_language {
+  # logic mirroring language selection in get_session_language:
+  # make array of langauges is preferred order (best first)
+  # then find the first one that matches
     my ( $languages, $results ) = @_;
     foreach my $pref_lang (@$languages) {
         for ( my $i = 0 ; $i < $results->count ; $i++ ) {
@@ -106,7 +114,7 @@ sub best_language {
 
         }
     }
-  # can't find a good match
+  # can't find a good match, but any of these results are better than nothing
   return $results->item(0)->get_id;
 }
 
@@ -139,7 +147,7 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub
         # only one page for this path, so we'll have to present that one
         $id = $results->item(0)->get_id;
       }else{
-        # logic mirroring language selection in get_session_language
+        # multiple results for this path - assume this is because they're multiple languages
 
         my $eprints = EPrints->new;
         my $repository = $eprints->current_repository();
