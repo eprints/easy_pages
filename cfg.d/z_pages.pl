@@ -1,5 +1,5 @@
 use EPrints::DataObj::Page;
-use EPrints::Const qw( OK DONE DECLINED );
+use EPrints::Const qw( OK DONE DECLINED NOT_FOUND );
 
 # set dependencies
 $c->{deps}->{"ingredients/pages"} = [ "ingredients/richtext" ];
@@ -32,12 +32,12 @@ $c->{plugins}{"Screen::Admin::PageCreate"}{params}{disable} = 0;
 # make all pages public
 push @{$c->{public_roles}}, "+page/view";
 
-# Redirect (information\|policies\|contact).html to /page/(information\|policies\|contact)
+# Redirect hardcoded html links to easy pages equivilants, and backwards compatible CRUD /id/page/$id$args links
 $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
 {
   my( %o ) = @_;
 
-  if( #$o{uri} =~ m|^$o{urlpath}/page/([^*]+)| || 
+  if( $o{uri} =~ m|^$o{urlpath}/id/page/([^*]+)| || 
       $o{uri} =~ m|^$o{urlpath}/(information\|policies\|contact).html| )
   {
     my $path = EPrints::DataObj::Page::tidy_path( $1 ); 
@@ -46,14 +46,14 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
     my $searchexp = new EPrints::Search( session=>$session, dataset=>$ds );
     $searchexp->add_field( $ds->get_field( "path" ), $path, "EQ" );
     my $results = $searchexp->perform_search;
-
+    # TODO abstract out language selection so it can be used for the old redirect here?
     if ( $results->count() == 1 )
     {
-      $id = $results->item(0)->get_id;
+      # $id = $results->item(0)->get_id;
 
-      my $args  = $o{args};
-         $args .= ( $args ) ? "&" : "?";
-         $args .= $path;
+      # my $args  = $o{args};
+      #    $args .= ( $args ) ? "&" : "?";
+      #    $args .= $path;
 
       # ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/id/page/$id$args" );
       ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/page/$path" );
@@ -93,7 +93,25 @@ $c->{set_page_automatic_fields} = sub
 
 };
 
+sub best_language {
+    my ( $languages, $results ) = @_;
+    foreach my $pref_lang (@$languages) {
+        for ( my $i = 0 ; $i < $results->count ; $i++ ) {
 
+            my $language = $results->item($i)->get_value("language");
+            
+            if ( $language eq $pref_lang ) {
+                return $results->item($i)->get_id;
+            }
+
+        }
+    }
+  # can't find a good match
+  return $results->item(0)->get_id;
+}
+
+# instead of /id/page/[id]?path, hide this away and just have /page/path
+# and choose the best available page for the current langauge.
 $c->{custom_handlers}->{easy_pages}->{regex} = '^URLPATH/page/([^*]+)';
 $c->{custom_handlers}->{easy_pages}->{function} = sub
 {
@@ -101,10 +119,12 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub
   
   my $session = new EPrints::Session;
 	exit( 0 ) unless( defined $session );
+ 
+
   my $current_url = $session->current_url;
-  print STDERR "current_url: $current_url\n";
+
   if ($current_url =~ m|/page/([^*]+)|){
-    print STDERR "current_url matched: 1:$1 2:$2\n";
+    
     my $path = EPrints::DataObj::Page::tidy_path( $1 ); 
     # my $session = new EPrints::Session;
     my $ds = $session->dataset( "page" );
@@ -114,18 +134,37 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub
 
     if ( $results->count() >= 1 )
     {
-      my $repository = $EPrints::HANDLE->current_repository();
       my $id = $results->item(0)->get_id;
+      if ($results->count == 1){
+        # only one page for this path, so we'll have to present that one
+        $id = $results->item(0)->get_id;
+      }else{
+        # logic mirroring language selection in get_session_language
+
+        my $eprints = EPrints->new;
+        my $repository = $eprints->current_repository();
+        exit( 0 ) unless( defined $repository );
+
+        my @prefs;
+        my $current_language = $repository->get_session_language( $repository->{request} );
+        my $default_langauge = $repository->get_conf( "defaultlanguage" );
+        
+        push @prefs, $current_language;
+        push @prefs, $default_langauge if $default_langauge ne $current_language;
+
+        $id = &best_language(\@prefs, $results);
+        
+        }
+
+
+      my $repository = $EPrints::HANDLE->current_repository();
       my $crud = EPrints::Apache::CRUD->new(
 				repository => $repository,
 				request => $r,
 				datasetid => "page",
 				dataobjid => $id,
-				# fieldid => $fieldid,
 			);
     
-    
-
       return $r->status if !defined $crud;
 
       $r->handler( 'perl-script' );
@@ -143,35 +182,6 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub
 
       return OK;
     }
-
-
+    return NOT_FOUND;
   }
-
-
-# my $path = EPrints::DataObj::Page::tidy_path( $1 ); 
-#     my $session = new EPrints::Session;
-#     my $ds = $session->dataset( "page" );
-#     my $searchexp = new EPrints::Search( session=>$session, dataset=>$ds );
-#     $searchexp->add_field( $ds->get_field( "path" ), $path, "EQ" );
-#     my $results = $searchexp->perform_search;
-
-#     if ( $results->count() == 1 )
-#     {
-
-
-
-
-	# my $session = new EPrints::Session;
-	# exit( 0 ) unless( defined $session );
-
-	# my $cu = $session->current_url;
-	# $cu =~ s|^/||;
-	# my ( $id ) = split( "/", $cu ); 
-	# return EPrints::Const::NOT_FOUND unless $id;
-
-	# my $ds = $session->dataset( "eprint" );
-	# my $eprint = $ds->dataobj( $id );
-	# return EPrints::Const::NOT_FOUND unless $eprint;
-
-	# return EPrints::Apache::Rewrite::redir( $r, $session->get_conf( "rel_path" ) .  "/" . $eprint->path );
 };
