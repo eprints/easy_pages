@@ -98,7 +98,7 @@ $c->{set_page_automatic_fields} = sub
 
 };
 
-sub best_language {
+sub id_of_best_language {
   # logic mirroring language selection in get_session_language:
   # make array of langauges is preferred order (best first)
   # then find the first one that matches
@@ -160,7 +160,7 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub
         push @prefs, $current_language;
         push @prefs, $default_langauge if $default_langauge ne $current_language;
 
-        $id = &best_language(\@prefs, $results);
+        $id = &id_of_best_language(\@prefs, $results);
         
         }
 
