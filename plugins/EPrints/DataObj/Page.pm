@@ -87,7 +87,7 @@ sub page_render_path
   my( $session, $field, $value, $page ) = @_;
 
   my $link = $session->make_element( "a", href => "/page/" . $value );
-  $link->appendChild( $session->make_text( $value ) ); # $page->get_value( "title" )
+  $link->appendChild( $session->make_text( $value ) );
 
   return $link;
 }
