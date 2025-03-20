@@ -7,6 +7,7 @@ easy_pages_paths
 =head1 DESCRIPTION
 
 Provide list of existing paths to aid with multiple language support
+Will provide all available paths, but sort so the one which matches best is first
 
 =cut
 
@@ -16,17 +17,12 @@ use strict;
 
 my $session = EPrints::Session->new();
 
-my $q = $session->param( "q" ) || "";
+my $provided_text = $session->param( "q" ) || "";
+
 
 my $database = $session->get_database;
 my $dataset = $session->dataset( "page" );
-# my @ids = $dataset->search->ids;
-# my $pages = $dataset->list( \@ids );
 
-# my $searchexp = new EPrints::Search( session=>$session, dataset=>$dataset );
-# my $results = $searchexp->perform_search;
-
-my @rows;
 my @paths;
 
 $dataset->search->map( sub {
@@ -40,12 +36,25 @@ $dataset->search->map( sub {
 
 });
 
-# foreach my $page ($pages)
-# {
-#     push @paths, $page->get_value("path");
-# }
+# https://stackoverflow.com/a/7829
+my %paths_hash = map { $_, 1 } @paths;
+my @unique_paths = keys %paths_hash;
 
-foreach my $path ( @paths ){
+# sort the paths lists so text that matches the beginning best is
+my $sort_paths_list = sub {
+    print STDERR "a: $a b: $b q: $provided_text\n";
+	my $a_matches = rindex $a, $provided_text, 0;
+	my $b_matches = rindex $b, $provided_text, 0;
+    # a actually matches
+    return -1 if $a_matches > $b_matches;
+	return 0 if $a_matches == $b_matches;
+	return 1;
+};
+
+my @sorted_paths = sort $sort_paths_list @unique_paths;
+
+my @rows;
+foreach my $path ( @sorted_paths ){
   
 	
     my $row = {};
