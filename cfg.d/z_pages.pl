@@ -79,7 +79,7 @@ $c->add_trigger( EP_TRIGGER_URL_REWRITE, sub
     return EP_TRIGGER_DONE;  
   }
 
-}, id => 'easy_pages_url_redirect' );
+}, id => 'easy_pages_nice_url_redirect' );
 
 $c->{set_page_automatic_fields} = sub
 {

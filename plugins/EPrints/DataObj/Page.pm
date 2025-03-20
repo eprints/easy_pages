@@ -13,11 +13,6 @@ sub get_dataset_id { "page" }
 
 sub indexable { return 1; }
 
-# sub get_language {
-#   my( $self ) = @_;
-#   return $self->language;
-# }
-
 sub get_system_field_info
 {
   my( $class ) = @_;
@@ -27,7 +22,6 @@ sub get_system_field_info
     { name => "pageid", type => "counter", sql_counter => "page", sql_index => 1 },
     { name => "rev_number", type => "int", required => 1, can_clone => 0, default_value => 1 },
     { name => "title", type => "text", required => 1, input_cols => 80, sql_index => 1 },
-    # { name => "language", type=> "text", required => 1, input_cols => 2, default_value => "en" }, 
     { name => "language", type => "namedset", required => 1, input_rows => 1, set_name => "languages"},
     { name => "path", type => "text", required => 0, input_cols => 80, sql_index => 1, render_single_value => "EPrints::DataObj::Page::page_render_path" },
     { name => "payload",
