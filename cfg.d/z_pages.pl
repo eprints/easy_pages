@@ -164,7 +164,8 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub {
                 my @prefs;
                 my $current_language =
                   $repository->get_session_language( $repository->{request} );
-                my $default_langauge = $repository->get_conf("defaultlangauge");
+                # fetch the default langauge so we can prioritise that if the current langauge doesn't have a page, but there are multiple other langauges to choose from.
+                my $default_langauge = $repository->get_conf("defaultlanguage");
 
                 push @prefs, $current_language;
                 push @prefs, $default_langauge
