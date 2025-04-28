@@ -106,7 +106,7 @@ $c->{set_page_automatic_fields} = sub {
 sub id_of_best_language {
 
     # logic mirroring language selection in get_session_language:
-    # make array of langauges is preferred order (best first)
+    # make array of languages is preferred order (best first)
     # then find the first one that matches
     my ( $languages, $results ) = @_;
     foreach my $pref_lang (@$languages) {
@@ -126,7 +126,7 @@ sub id_of_best_language {
 }
 
 # instead of /id/page/[id]?path, hide this away and just have /page/path
-# and choose the best available page for the current langauge.
+# and choose the best available page for the current language.
 $c->{custom_handlers}->{easy_pages}->{regex}    = '^URLPATH/page/([^*]+)';
 $c->{custom_handlers}->{easy_pages}->{function} = sub {
     my ($r) = @_;
@@ -164,12 +164,12 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub {
                 my @prefs;
                 my $current_language =
                   $repository->get_session_language( $repository->{request} );
-                # fetch the default langauge so we can prioritise that if the current langauge doesn't have a page, but there are multiple other langauges to choose from.
-                my $default_langauge = $repository->get_conf("defaultlanguage");
+                # fetch the default language so we can prioritise that if the current language doesn't have a page, but there are multiple other languages to choose from.
+                my $default_language = $repository->get_conf("defaultlanguage");
 
                 push @prefs, $current_language;
-                push @prefs, $default_langauge
-                  if $default_langauge ne $current_language;
+                push @prefs, $default_language
+                  if $default_language ne $current_language;
 
                 $id = &id_of_best_language( \@prefs, $results );
 
