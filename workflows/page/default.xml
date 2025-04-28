@@ -13,9 +13,11 @@
       <p><b>1.</b> Provide a title for the page, this will appear at the top of the page as a heading.</p>
       <p><b>2.</b> Provide a language for the page, if this EPrints instance is multi-lingual.</p>
       <p><b>3.</b> Add the page contents and use the document formatting tool to organise the information appropriately.</p>
-      <p><b>4.</b> Lastly, enter a path name. This will be the reposities URL with /path/the-name-you-choose appeneded.</p>
-      <br/>
+      <p><b>4.</b> Lastly, enter a path name. This will be the reposities URL with /page/the-name-you-choose appeneded.</p>
+      <h4>Multiple Langauges</h4>
       <p>Multiple languages can be supported by adding multiple pages with the same path, and different language. The best available path for the current language will be displayed to the user.</p>
+      
+      <p>For example, for a multi-lingual information page, create two pages with the same path ("information" for the default information page) each in a different langauge (for example, English and German). When a user has configured EPrints to be in English the information page in English will be presented at /page/information. When Eprints is configured in German, the german information page will be presented at /page/information. Any extra pages with the same path in the same langauge will be ignored.</p>
       <br/>
       <p>Once you have finished you can click Save and Return, this will provide you with a link to the finished page.</p>
       <p>Use the link just as you would use a normal URL link. For example, it could be added to the repository home page, added to a workflow field description, sent out in an email etc.</p>
