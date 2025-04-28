@@ -12,6 +12,7 @@
 <epp:phrase id="page_fieldhelp_pageid">Unique Identifier</epp:phrase>
 <epp:phrase id="page_fieldname_title">Title</epp:phrase>
 <epp:phrase id="page_fieldname_language">Language</epp:phrase>
+<epp:phrase id="page_fieldhelp_language">Language page is written in</epp:phrase>
 <epp:phrase id="page_fieldhelp_title">The title text of the page, this will also be used to create the URL path if a path is not set.</epp:phrase>
 <epp:phrase id="page_fieldname_content">Content</epp:phrase>
 <epp:phrase id="page_fieldhelp_content"></epp:phrase>
@@ -30,5 +31,4 @@
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:action:create_page:description">Create a new HTML Page</epp:phrase>
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:title">Create a Page</epp:phrase>
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:page_created">A new page has been created. Go to <a href="/cgi/users/home?screen=Listing&amp;dataset=page">'Manage records > Pages'</a> to start editing.</epp:phrase>
-
 </epp:phrases>
