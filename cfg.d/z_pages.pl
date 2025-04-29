@@ -164,6 +164,7 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub {
                 my @prefs;
                 my $current_language =
                   $repository->get_session_language( $repository->{request} );
+
                 # fetch the default language so we can prioritise that if the current language doesn't have a page, but there are multiple other languages to choose from.
                 my $default_language = $repository->get_conf("defaultlanguage");
 
@@ -200,3 +201,49 @@ $c->{custom_handlers}->{easy_pages}->{function} = sub {
         return NOT_FOUND;
     }
 };
+
+# Trigger to generate a warning if path and language aren't a unique combination
+$c->add_trigger(
+    EPrints::Const::EP_TRIGGER_VALIDATE_FIELD,
+    sub {
+        my (%args) = @_;
+        my ( $repo, $field, $page, $value, $problems ) =
+          @args{qw( repository field dataobj value problems )};
+
+        return
+             unless defined $page
+          && $page->isa("EPrints::DataObj::Page")
+          && $field->name eq "path";
+
+        my $path = $page->get_value("path");
+        my $language = $page->get_value("language");
+
+        #this is a page and field is the path
+        my $dataset = $repo->dataset("page");
+
+        my $existing_this_lang_this_path = 0;
+
+        $dataset->search->map(
+            sub {
+                my ( undef, undef, $search_page ) = @_;
+                my $search_path = $search_page->get_value("path");
+                my $search_language = $search_page->get_value("language");
+
+                if ( defined $search_path && $search_path eq $path && $search_language eq $language) {
+
+                    $existing_this_lang_this_path++;
+                }
+
+            }
+        );
+
+        if($existing_this_lang_this_path > 1){
+            #greater than one because this page will already be in the search results
+            #there already exists another page for this language on this path, so this page will never be seen
+            push @$problems, $repo->html_phrase( "Plugin/Screen/Admin/PageCreate:path_already_exists",
+                    path => $repo->make_text($path),
+                    language => $repo->make_text($language));
+        }
+    },
+    priority => 1000
+);

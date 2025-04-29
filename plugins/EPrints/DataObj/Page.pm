@@ -92,4 +92,7 @@ sub page_render_path
   return $link;
 }
 
+# sub validate cannot be defined here as it will never be called, I think because there isn't a Deposit stage for Pages
+# instead there is a trigger in z_pages.pl to validate path/language
+
 1;

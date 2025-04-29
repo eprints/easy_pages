@@ -31,4 +31,5 @@
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:action:create_page:description">Create a new HTML Page</epp:phrase>
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:title">Create a Page</epp:phrase>
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:page_created">A new page has been created. Go to <a href="/cgi/users/home?screen=Listing&amp;dataset=page">'Manage records > Pages'</a> to start editing.</epp:phrase>
+<epp:phrase id="Plugin/Screen/Admin/PageCreate:path_already_exists">There is already a page on path '<epc:pin name="path"/>'' for language '<epc:pin name="language"/>'. Please choose a unique combination of path and language for this page to be visible.</epp:phrase>
 </epp:phrases>
