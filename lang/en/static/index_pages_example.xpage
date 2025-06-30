@@ -9,15 +9,19 @@
 <div style="margin: 0 auto; width: 700px;">
   <div id="pages_home"></div>
   <script type="text/javascript">
-    fetch('/page/home?mainonly=yes').then(res => {
-      document.getElementById('pages_home').innerHTML = res;
+    fetch('/page/home?mainonly=yes').then((res) => {
+      res.text().then((text) => {
+        document.getElementById('pages_home').innerHTML = text;
+      });
     });
   </script>
 
   <div id="pages_index"></div>
   <script type="text/javascript">
-    fetch('/cgi/pages.embed').then(res => {
-      document.getElementById('pages_index').innerHTML = res;
+    fetch('/cgi/pages.embed').then((res) => {
+      res.text().then((text) => {
+        document.getElementById('pages_index').innerHTML = text;
+      });
     });
   </script>
 </div>
