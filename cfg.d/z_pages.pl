@@ -36,62 +36,59 @@ push @{ $c->{public_roles} }, "+page/view";
 $c->{xapian}->{indexing_methods} = {} unless defined $c->{xapian}->{indexing_methods};
 $c->{xapian}->{indexing_methods}->{'EPrints::MetaField::Page'} = 'text';
 
-$c->{set_page_automatic_fields} = sub {
-    my ($page) = @_;
+$c->{set_page_automatic_fields} = sub
+{
+  my( $page ) = @_;
 
-    if ( !$page->is_set("path") ) {
-        $page->set_value( "path",
-            EPrints::DataObj::Page::tidy_path( $page->get_value("title") ) );
-    }
-    else {
-        my $path      = $page->get_value("path");
-        my $tidy_path = EPrints::DataObj::Page::tidy_path($path);
-        $page->set_value( "path", $tidy_path ) if $path ne $tidy_path;
-    }
+  if( !$page->is_set( "path" ) )
+  {
+    $page->set_value(
+        "path",
+        EPrints::DataObj::Page::tidy_path(
+            EPrints::DataObj::Page->put_here(
+                $page->repository,
+                $page->get_value( "title" ),
+            )
+        )
+    );
+  }
+  else
+  {
+    my $path = $page->get_value( "path" );
+    my $tidy_path = EPrints::DataObj::Page::tidy_path( $path );
+    $page->set_value( "path", $tidy_path ) if $path ne $tidy_path;
+  }
 };
-
-sub id_of_best_language {
-
-    # logic mirroring language selection in get_session_language:
-    # make array of languages is preferred order (best first)
-    # then find the first one that matches
-    my ( $languages, $results ) = @_;
-    foreach my $pref_lang (@$languages) {
-        for ( my $i = 0 ; $i < $results->count ; $i++ ) {
-        
-            my $language = $results->item($i)->get_value("language");
-            
-            if ( $language eq $pref_lang ) {
-                return $results->item($i)->get_id;
-            }
-        }
-    }
-    
-    # can't find a good match, but any of these results are better than nothing
-    return $results->item(0)->get_id;
-}
 
 # Redirect hardcoded html links and old CRUD links to easy pages
 $c->add_trigger(
     EP_TRIGGER_URL_REWRITE,
     sub {
         my (%o) = @_;
+
         if ( $o{uri} =~ m|^$o{urlpath}/(information\|policies\|contact).html| || $o{uri} =~ m|^$o{urlpath}/(help)/?$|i )
         {
             my $path    = EPrints::DataObj::Page::tidy_path($1);
             my $session = new EPrints::Session;
             my $ds      = $session->dataset("page");
-            my $searchexp =
-              new EPrints::Search( session => $session, dataset => $ds );
+            my $searchexp = new EPrints::Search( session => $session, dataset => $ds );
             $searchexp->add_field( $ds->get_field("path"), $path, "EQ" );
             my $results = $searchexp->perform_search;
 
-            if ( $results->count() >= 1 ) {
+            if ( $results->count() == 1 )
+            {
                 $id = $results->item(0)->get_id;
 
-                ${ $o{return_code} } =
-                  EPrints::Apache::Rewrite::redir( $o{request},
-                    $o{urlpath} . "/page/$path" );
+                my $args  = $o{args};
+                $args .= ( $args ) ? "&" : "?";
+                $args .= $path;
+
+                ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/id/page/$id$args" );
+                return EP_TRIGGER_DONE;
+            }
+            elsif( $results->count() > 1 )
+            {
+                ${$o{return_code}} = EPrints::Apache::Rewrite::redir( $o{request}, $o{urlpath}."/cgi/pages.search?path=$path" );
                 return EP_TRIGGER_DONE;
             }
         }
@@ -198,29 +195,26 @@ $c->{get_easy_page_substitutions} = sub
                                 \@values_in_order;
 };
 
-$c->{set_page_automatic_fields} = sub
-{
-  my( $page ) = @_;
+sub id_of_best_language {
 
-  if( !$page->is_set( "path" ) )
-  {
-    $page->set_value(
-        "path",
-        EPrints::DataObj::Page::tidy_path(
-            EPrints::DataObj::Page->put_here(
-                $page->repository,
-                $page->get_value( "title" ),
-            )
-        )
-    );
-  }
-  else
-  {
-    my $path = $page->get_value( "path" );
-    my $tidy_path = EPrints::DataObj::Page::tidy_path( $path );
-    $page->set_value( "path", $tidy_path ) if $path ne $tidy_path;
-  }
-};
+    # logic mirroring language selection in get_session_language:
+    # make array of languages is preferred order (best first)
+    # then find the first one that matches
+    my ( $languages, $results ) = @_;
+    foreach my $pref_lang (@$languages) {
+        for ( my $i = 0 ; $i < $results->count ; $i++ ) {
+
+            my $language = $results->item($i)->get_value("language");
+
+            if ( $language eq $pref_lang ) {
+                return $results->item($i)->get_id;
+            }
+        }
+    }
+
+    # can't find a good match, but any of these results are better than nothing
+    return $results->item(0)->get_id;
+}
 
 # instead of /id/page/[id]?path, hide this away and just have /page/path
 # and choose the best available page for the current language.
