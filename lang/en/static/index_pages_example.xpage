@@ -9,12 +9,16 @@
 <div style="margin: 0 auto; width: 700px;">
   <div id="pages_home"></div>
   <script type="text/javascript">
-    jQuery("#pages_home").load( "/page/home?mainonly=yes" );
+    fetch('/page/home?mainonly=yes').then(res => {
+      document.getElementById('pages_home').innerHTML = res;
+    });
   </script>
 
   <div id="pages_index"></div>
   <script type="text/javascript">
-    jQuery("#pages_index").load( "/cgi/pages.embed" );
+    fetch('/cgi/pages.embed').then(res => {
+      document.getElementById('pages_index').innerHTML = res;
+    });
   </script>
 </div>
 
