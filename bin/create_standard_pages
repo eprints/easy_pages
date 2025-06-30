@@ -48,7 +48,7 @@ my %pages = (
 	home => {
 		title => "Home",
 		path => "home",
-		paload => "<dl id='ep-homepage-menu' title='Homepage Menu'><dt id='search-repository'><a href='/cgi/search/advanced'>Search Repository</a></dt>   <dd>Search the repository using a full range of fields. Use the search field at the top of the page for a quick search.</dd>  <dt id='browse-repository'><a href='/view/'>Browse Repository</a></dt>   <dd>Browse the items in the repository by <a href='/view/year/'>year</a>, <a href='/view/subjects/'>subject</a>, <a href='/view/divisions/'>division</a> or <a href='/view/creators/'>author</a>.</dd></dl> </dl> </dl>"
+		payload => "<dl id='ep-homepage-menu' title='Homepage Menu'><dt id='search-repository'><a href='/cgi/search/advanced'>Search Repository</a></dt>   <dd>Search the repository using a full range of fields. Use the search field at the top of the page for a quick search.</dd>  <dt id='browse-repository'><a href='/view/'>Browse Repository</a></dt>   <dd>Browse the items in the repository by <a href='/view/year/'>year</a>, <a href='/view/subjects/'>subject</a>, <a href='/view/divisions/'>division</a> or <a href='/view/creators/'>author</a>.</dd></dl> </dl> </dl>"
 	},
 );
 
