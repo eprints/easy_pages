@@ -11,15 +11,18 @@
 <epp:phrase id="page_fieldname_pageid">ID</epp:phrase>
 <epp:phrase id="page_fieldhelp_pageid">Unique Identifier</epp:phrase>
 <epp:phrase id="page_fieldname_title">Title</epp:phrase>
+<epp:phrase id="page_fieldname_language">Language</epp:phrase>
+<epp:phrase id="page_fieldhelp_language">Language page is written in</epp:phrase>
 <epp:phrase id="page_fieldhelp_title">The title text of the page, this will also be used to create the URL path if a path is not set.</epp:phrase>
 <epp:phrase id="page_fieldname_content">Content</epp:phrase>
 <epp:phrase id="page_fieldhelp_content"></epp:phrase>
 <epp:phrase id="page_fieldname_payload">Content</epp:phrase>
 <epp:phrase id="page_fieldhelp_payload">The main contents of the page.</epp:phrase>
 <epp:phrase id="page_fieldname_path">Path</epp:phrase>
-<epp:phrase id="page_fieldhelp_path">The URL path of the page, eg http://my-repository.com/page/PATH.  This will be created automatically if left blank.</epp:phrase>
+<epp:phrase id="page_fieldhelp_path">The URL path of the page, eg http://my-repository.com/page/PATH.  This will be created automatically if left blank. You can use the auto-suggestions if you are trying to configure multiple languages.</epp:phrase>
 <epp:phrase id="page_fieldname_rev_number">Revision</epp:phrase>
 <epp:phrase id="page_fieldhelp_rev_number"></epp:phrase>
+
 
 <epp:phrase id="EPrints::Plugin::Screen::Page::History:title">Page History</epp:phrase>
 
@@ -28,8 +31,10 @@
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:action:create_page:description">Create a new HTML Page</epp:phrase>
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:title">Create a Page</epp:phrase>
 <epp:phrase id="Plugin/Screen/Admin/PageCreate:page_created">A new page has been created. Go to <a href="/cgi/users/home?screen=Listing&amp;dataset=page">'Manage records > Pages'</a> to start editing.</epp:phrase>
+<epp:phrase id="Plugin/Screen/Admin/PageCreate:path_already_exists">There is already a page on path '<epc:pin name="path"/>'' for language '<epc:pin name="language"/>'. Please choose a unique combination of path and language for this page to be visible.</epp:phrase>
 
 <!-- Page Replacements / Substitutions -->
 <epp:phrase id="EPrints/MetaField/Page:render_input_field_actual:replacements:instant_admin_email_link"><a href="mailto:PUT-ADMIN-EMAIL-HERE">PUT-ADMIN-EMAIL-HERE</a></epp:phrase>
 <epp:phrase id="EPrints/MetaField/Page:render_input_field_actual:replacements:instant_archive_link"><a href="PUT-ARCHIVE-URL-HERE" target="_blank" rel="">PUT-ARCHIVE-NAME-HERE</a></epp:phrase>
+
 </epp:phrases>
