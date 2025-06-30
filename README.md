@@ -19,7 +19,11 @@ Easy pages can be included in xpage templates using the following ajax call.
 ```html
 <div id="pages_home"></div>
 <script type="text/javascript">
-  jQuery("#pages_home").load( "/page/home?mainonly=yes" );
+  fetch('/page/home?mainonly=yes').then((res) => {
+    res.text().then((text) => {
+      document.getElementById('pages_home').innerHTML = text;
+    });
+  });
 </script>
 ```
 
