@@ -28,12 +28,15 @@ var initTinyMCE_for_easy_pages = function(id,replacements, preview_substitutions
             relative_urls : true,
             //document_base_url : 'http://example.eprints.org/', - as a value unique to each repository, this should be passed in or commented out/left at default.
 
+            promotion: false, // Don't show the promotion popup
+            license_key: 'gpl', // This is licensed under GPLv2.1
+
             // Functionality:
             plugins: [
-                'advlist autolink lists link image charmap print anchor',
-                'searchreplace visualblocks code fullscreen preview_with_css_branding', // unique preview variation.
-                'insertdatetime media table contextmenu paste code textpattern', // textpattern 4.9.1 not in richtext ingredient
-                                                                                 // and so added with/alongside easy_pages implementation
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table',
+                'preview_with_css_branding', // modified version of preview (see version.txt)
             ],
 
             // Custom values for preview_with
