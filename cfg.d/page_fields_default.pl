@@ -1,7 +1,8 @@
+$c->add_dataset_trigger( 'page', EP_TRIGGER_DEFAULTS, sub {
+	my( %params ) = @_;
+	my $repo = $params{repository};
 
-$c->{set_page_defaults} = sub {
-    my ( $page, $repository, $parent ) = @_;
+	# Default language is the current language
+	$params{data}->{language} = $repo->get_langid();
+});
 
-    #default language is the current language
-    $page->{language} = $repository->get_langid();
-};
