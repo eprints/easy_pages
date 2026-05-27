@@ -21,9 +21,8 @@ var initTinyMCE_for_easy_pages = function(id,replacements, preview_substitutions
 
             // General:
             selector: id,
-            resize: 'both',
+            resize: 'height',
             height: 500,
-            width: 700,
             //cache_suffix: '?'+ new Date().getTime(), // Doesn't appear to work with 4.6.1 so commented out in favour of manually adding to the end of content_css further below.
             relative_urls : true,
             //document_base_url : 'http://example.eprints.org/', - as a value unique to each repository, this should be passed in or commented out/left at default.
