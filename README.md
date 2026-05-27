@@ -33,5 +33,4 @@ Easy pages can be included in xpage templates using the following ajax call.
 - Justin Bradley, EPrints Services
 - Edward Oakley, EPrints Services
 
-EPrints 3.4 is supplied by EPrints Services.\
-The files contained within this directory are all Copyright 2023 University of Southampton.
+The files contained within ths 'easy_pages' ingredient are Copyright (2023-2026) of the University of Southampton and provided under the GNU Lesser General Public License (https://www.gnu.org/licenses/lgpl-3.0.en.html)
