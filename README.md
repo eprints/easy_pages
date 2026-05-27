@@ -33,4 +33,4 @@ Easy pages can be included in xpage templates using the following ajax call.
 - Justin Bradley, EPrints Services
 - Edward Oakley, EPrints Services
 
-The files contained within ths 'easy_pages' ingredient are Copyright (2023-2026) of the University of Southampton and provided under the GNU Lesser General Public License (https://www.gnu.org/licenses/lgpl-3.0.en.html)
+The files contained within this 'easy_pages' ingredient are Copyright (2023-2026) of the University of Southampton and provided under the GNU Lesser General Public License (https://www.gnu.org/licenses/lgpl-3.0.en.html)
