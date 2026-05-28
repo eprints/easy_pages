@@ -49,15 +49,12 @@
           </tr>
           <tr>
               <td>PUT-ARCHIVE-URL-HERE</td>
-              <td><epc:print expr='$config{https_root}' /></td><!-- Not honest - as archive url is actually a value calculated in z_pages.pl 
-                                                                - this is simply close enough until can be improved to have parity.
-                                                                Also potentially displays blank if no https.
-                                                                Could be improved with test conditionals and alternatives-->
+	      <td><epc:print expr='$config{base_url}' /></td> <!-- See ARCHIVE-URL in cfg.d/z_pages.pl for specifics. -->
               <td>Repository Configuration</td>
           </tr>
           <tr>
               <td>PUT-CGI-URL-HERE</td>
-              <td><epc:print expr='$config{perl_url}' /></td><!-- Not honest - as cgi url is actually a value calculated in z_pages.pl - this is simply close enough - this is simply close enough until can be improved to have parity.-->
+	      <td><epc:print expr='$config{perl_url}' /></td> <!-- See CGI-URL in cfg.d/z_pages.pl for specifics. -->
               <td>Repository Configuration</td>
           </tr>
       </table>
