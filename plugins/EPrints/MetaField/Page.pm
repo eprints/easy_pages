@@ -108,7 +108,7 @@ sub render_input_field_actual
 
 =begin COPYRIGHT_AND_LICENSE
 
-Copyright University of Southampton under the GNU Lesser General Public License. See https://github.com/eprints/easy_pages/README.md for further information.
+Copyright University of Southampton under the GNU Lesser General Public License. See README https://github.com/eprints/easy_pages for further information.
 
 Easy Pages ingredient is supplied by EPrints Services.
 
