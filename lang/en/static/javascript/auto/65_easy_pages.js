@@ -21,7 +21,8 @@ var initTinyMCE_for_easy_pages = function(id,replacements, preview_substitutions
 
             // General:
             selector: id,
-	    license_key: 'gpl',
+            promotion: false, // Don't show the promotion popup
+            license_key: 'gpl', // This is licensed under GPLv2.1
             resize: 'height',
             height: 500,
             //cache_suffix: '?'+ new Date().getTime(), // Doesn't appear to work with 4.6.1 so commented out in favour of manually adding to the end of content_css further below.
@@ -30,10 +31,10 @@ var initTinyMCE_for_easy_pages = function(id,replacements, preview_substitutions
 
             // Functionality:
             plugins: [
-                'advlist autolink lists link image charmap print anchor',
-                'searchreplace visualblocks code fullscreen preview_with_css_branding', // unique preview variation.
-                'insertdatetime media table contextmenu paste code textpattern', // textpattern 4.9.1 not in richtext ingredient
-                                                                                 // and so added with/alongside easy_pages implementation
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', 'preview_with_css_branding',
+                'insertdatetime', 'media', 'table',
+                'preview_with_css_branding', // modified version of preview (see version.txt)
             ],
 
             // Custom values for preview_with
