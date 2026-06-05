@@ -56,45 +56,22 @@ sub render_input_field_actual
     #warn 'Subs:'.EPrints->dump(join "",%substitutions);
     #EPrints->abort('Premature end.');
 
-    #$frag->appendChild( $repository->make_element( "script", src => "//code.jquery.com/jquery-1.12.4.js" ) );
     $frag->appendChild( $repository->make_element( "script", src=> "/javascript/tinymce.min.js" ) );
     $frag->appendChild(
-        $repository->make_javascript(
-            'jQuery( document ).ready('.
-                'function($){ '.
-                    'initTinyMCE_for_easy_pages('.
-
-                        # Name/id of html element
-                        # to become the TinyMCE input window
-                        # - i.e. '#c3_payload'
-                        # - requires hash prefix as added below:
-                        '"#' . $basename .'",'.
-
-                        # Javascript object with attributes based on %replacements or empty:
-                        '{'.
-                            (
-                                %replacements?          join (
-                                                            ',',
-                                                            map { "'$ARG': '$replacements{$ARG}'" }
-                                                            (keys %replacements)
-                                                        ):
-                                q{}
-                            ).
-                        '},'.
-                        # Javascript object with attributes based on %preview_substitutions or empty:
-                        '{'.
-                            (
-                                %preview_substitutions? join (
-                                                            ',',
-                                                            map { "'$ARG': '$preview_substitutions{$ARG}'" }
-                                                            (keys %preview_substitutions)
-                                                        ):
-                                q{}
-                            ).
-                        '}'.
-                    ');'.
-                '}'.
-            ');',
+        $repository->make_javascript("
+document.addEventListener('DOMContentLoaded', () => {
+    initTinyMCE_for_easy_pages(
+        '#$basename',
+        {" .
+            # Javascript object with attributes based on %replacements or empty
+            ( %replacements ? join ( ',', map { "'$ARG': '$replacements{$ARG}'" } (keys %replacements) ) : q{} ) .
+        "},
+        {" .
+            # Javascript object with attributes based on %preview_substitutions or empty
+            ( %preview_substitutions ? join( ',', map { "'$ARG': '$preview_substitutions{$ARG}'" } (keys %preview_substitutions) ) : q{} ) .
+        "}
+    );
+});"
         )
     );
 
