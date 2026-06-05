@@ -5,16 +5,17 @@
   </flow>
   <stage name="main">
     <component type="XHTML">
-      <h3 style="text-align:center">How to use EASY PAGES</h3>
+      <h2 style="text-align:center">How to use EASY PAGES</h2>
 
       <p>You may wish to create a new page for many reasons; announcements, documentation, instructions, further details, etc.</p>
       <p>With the easy pages tool you can easily create a page to provide information.</p>
-      <p><b>1.</b> Provide a title for the page, this will appear at the top of the page as a heading.</p>
-
-      <p><b>2.</b> Provide a language for the page, if this EPrints instance is multi-lingual.</p>
-      <p><b>3.</b> Add the page contents and use the document formatting tool to organise the information appropriately.</p>
-      <p><b>4.</b> Lastly, enter a path name. This will be the repository's URL with <code>/page/the-name-you-choose</code> appended.</p>
-      <h4>Multiple Languages</h4>
+      <ol class="easy_pages_instructions">
+	<li>Provide a title for the page, this will appear at the top of the page as a heading.</li>
+	<li>Provide a language for the page, if this EPrints instance is multi-lingual.</li>
+        <li>Add the page contents and use the document formatting tool to organise the information appropriately.</li>
+      	<li>Lastly, enter a path name. This will be the repository's URL with <code>/page/the-name-you-choose</code> appended.</li>
+      </ol>
+      <h3>Multiple Languages</h3>
       <p>Multiple languages can be supported by adding multiple pages with the same path, and different language. The best available path for the current language will be displayed to the user.</p>
       
       <p>For example, for a multi-lingual information page, create two pages with the same path ("information" for the default information page) each in a different language (for example, English and German). When a user has configured EPrints to be in English the information page in English will be presented at /page/information. When Eprints is configured in German, the german information page will be presented at /page/information. Any extra pages with the same path in the same language will be ignored.</p>
@@ -31,11 +32,11 @@
       <p>Use the placeholders anywhere you would like dynamic content to appear.</p>
       <p>You can preview the dynamic content using View-&gt;Preview on the menubar, or the Preview icon on the toolbar.</p>
 
-      <table>
+      <table class="easy_pages_dynamic_vars">
           <tr>
-              <td>Placeholder</td>
-              <td>Current value</td>
-              <td>Where Value is Defined:</td>
+              <th>Placeholder</th>
+              <th>Current value</th>
+              <th>Where Value is Defined:</th>
           </tr>
           <tr>
               <td>PUT-ADMIN-EMAIL-HERE</td>
@@ -67,10 +68,11 @@
 
       <p>These are essentially convenient shortcuts.</p>
 
-      <table>
+      <table class="easy_pages_instant_subs">
+	  <caption>These are essentially convenient shortcuts.</caption>
           <tr>
-              <td>Typing this...</td>
-              <td>Does this...</td>
+              <th>Typing this...</th>
+              <th>Does this...</th>
           </tr>
           <tr>
               <td>INSTANT-ADMIN-EMAIL-LINK</td>
