@@ -183,17 +183,28 @@ $c->{get_easy_page_substitutions} = sub
 
     # The Substitutions we are getting...
     my  @values_in_order    =   (
-        'ADMIN-EMAIL'       =>  $repository->config('adminemail'),
-        'ARCHIVE-NAME'      =>  $repository->html_phrase('archive_name')->toString,
-        'ARCHIVE-URL'       =>  $static_folder->as_string,  # Assuming static folder is root!
+        'ADMIN-EMAIL'       =>  sanitize_easy_pages_substitution( $repository->config('adminemail') ),
+        'ARCHIVE-NAME'      =>  sanitize_easy_pages_substitution( $repository->html_phrase('archive_name')->toString ),
+        'ARCHIVE-URL'       =>  sanitize_easy_pages_substitution( $static_folder->as_string ),  # Assuming static folder is root!
                                                             # Is it always?
                                                             # Am I better off getting secure host from config?
-        'CGI-URL'           =>  $cgi_folder,
+        'CGI-URL'           =>  sanitize_easy_pages_substitution( $cgi_folder ),
     );
 
     return                      wantarray?  @values_in_order:
                                 \@values_in_order;
 };
+
+sub sanitize_easy_pages_substitution {
+	my ( $value ) = @_;
+
+	$value =~ s/[^\w\s\!\"\£\$\%\^&*()=+{}\[\]\@'~#\\\/?,.<>:;|-]//g;
+    $value =~ s/'/\\\'/g;
+
+	return $value;
+}
+
+
 
 sub id_of_best_language {
 
