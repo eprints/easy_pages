@@ -1,6 +1,6 @@
 # Easy Pages
 
-The 'easy_pages' ingredient is designed to extend EPrints 3.4 by adding a new 'page' dataset.\
+The 'easy_pages' ingredient is designed to extend EPrints 3.4+ by adding a new 'page' dataset.\
 The page dataobjects can be used to create HTML pages, as an alternative to creating XHTML and xpage files directly.\
 Page content is entered via the rich text editor, TinyMCE, as supplied by the richtext ingredient.
 
