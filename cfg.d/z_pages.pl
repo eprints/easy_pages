@@ -36,6 +36,12 @@ push @{ $c->{public_roles} }, "+page/view";
 $c->{xapian}->{indexing_methods} = {} unless defined $c->{xapian}->{indexing_methods};
 $c->{xapian}->{indexing_methods}->{'EPrints::MetaField::Page'} = 'text';
 
+$c->add_dataset_trigger( 'page', EP_TRIGGER_DEFAULTS, sub {
+    my( %params ) = @_;
+
+    $params{data}->{language} = $params{repository}->get_langid();
+}, id => 'default_page_language_from_repository' );
+
 $c->{set_page_automatic_fields} = sub
 {
   my( $page ) = @_;
